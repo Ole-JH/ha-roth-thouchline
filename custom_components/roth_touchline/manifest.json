@@ -1,0 +1,12 @@
+{
+  "domain": "roth_touchline",
+  "name": "Roth Touchline SL",
+  "codeowners": ["@Ole-JH"],
+  "config_flow": true,
+  "documentation": "https://github.com/Ole-JH/ha-roth-thouchline",
+  "integration_type": "hub",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/Ole-JH/ha-roth-thouchline/issues",
+  "requirements": [],
+  "version": "0.1.0"
+}

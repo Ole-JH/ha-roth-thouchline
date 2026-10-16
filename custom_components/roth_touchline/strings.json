@@ -1,0 +1,46 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Roth Touchline SL",
+        "description": "Log in with the same account you use in the Roth Touchline SL app.",
+        "data": {
+          "username": "Email",
+          "password": "Password"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Log in again",
+        "description": "The Roth cloud no longer accepts the password for {username}. Enter it again.",
+        "data": {
+          "password": "Password"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Could not reach the Roth cloud. Try again later.",
+      "invalid_auth": "Wrong email or password.",
+      "unknown": "Unexpected error. Check the Home Assistant log."
+    },
+    "abort": {
+      "already_configured": "This Roth account is already set up.",
+      "reauth_successful": "Logged in again.",
+      "wrong_account": "That login belongs to a different Roth account."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "signal_strength": {
+        "name": "Signal strength"
+      }
+    }
+  },
+  "exceptions": {
+    "set_temperature_failed": {
+      "message": "Could not set the temperature: {error}"
+    },
+    "hvac_mode_not_supported": {
+      "message": "Switching between heating, cooling and off has to be done on the Touchline SL controller."
+    }
+  }
+}

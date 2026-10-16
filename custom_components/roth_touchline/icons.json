@@ -1,0 +1,18 @@
+{
+  "entity": {
+    "climate": {
+      "zone": {
+        "default": "mdi:heating-coil",
+        "state": {
+          "cool": "mdi:snowflake",
+          "off": "mdi:radiator-off"
+        }
+      }
+    },
+    "sensor": {
+      "signal_strength": {
+        "default": "mdi:signal"
+      }
+    }
+  }
+}

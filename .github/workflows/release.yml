@@ -1,9 +1,13 @@
 name: Release
 
+# Publishes a GitHub release whenever main carries a manifest version that
+# has no release yet. Bump "version" in manifest.json to cut a new release.
+
 on:
   push:
-    tags:
-      - "v*"
+    branches:
+      - main
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -13,11 +17,30 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Check manifest version matches tag
-        run: |
-          manifest=$(jq -r .version custom_components/roth_touchline/manifest.json)
-          [ "v$manifest" = "$GITHUB_REF_NAME" ] || { echo "manifest version $manifest does not match tag $GITHUB_REF_NAME"; exit 1; }
-      - uses: softprops/action-gh-release@v2
         with:
-          generate_release_notes: true
-          body_path: CHANGELOG.md
+          fetch-depth: 0
+      - name: Read version
+        id: version
+        run: |
+          version=$(jq -r .version custom_components/roth_touchline/manifest.json)
+          echo "tag=v$version" >> "$GITHUB_OUTPUT"
+          if git rev-parse "v$version" >/dev/null 2>&1; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Release notes
+        if: steps.version.outputs.exists == 'false'
+        run: |
+          awk -v tag="## ${{ steps.version.outputs.tag }}" '
+            $0 == tag {found=1; next}
+            found && /^## / {exit}
+            found {print}
+          ' CHANGELOG.md > release_notes.md
+      - uses: softprops/action-gh-release@v2
+        if: steps.version.outputs.exists == 'false'
+        with:
+          tag_name: ${{ steps.version.outputs.tag }}
+          name: ${{ steps.version.outputs.tag }}
+          target_commitish: ${{ github.sha }}
+          body_path: release_notes.md
